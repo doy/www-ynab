@@ -1,4 +1,5 @@
 package WWW::YNAB::UA;
+
 use Moose;
 
 use HTTP::Tiny;
@@ -85,5 +86,14 @@ sub _request {
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
+
+=begin Pod::Coverage
+
+  get
+  post
+
+=end Pod::Coverage
+
+=cut
 
 1;

@@ -1,4 +1,5 @@
 package WWW::YNAB::ModelHelpers;
+
 use Moose::Role;
 
 sub model_from_data {
@@ -25,5 +26,13 @@ sub model_from_data {
 }
 
 no Moose::Role;
+
+=begin Pod::Coverage
+
+  model_from_data
+
+=end Pod::Coverage
+
+=cut
 
 1;

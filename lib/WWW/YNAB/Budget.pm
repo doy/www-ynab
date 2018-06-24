@@ -1,10 +1,29 @@
 package WWW::YNAB::Budget;
+
 use Moose;
+# ABSTRACT: Budget model object
 
 use Carp;
 use Moose::Util::TypeConstraints qw(find_type_constraint);
 
 with 'WWW::YNAB::ModelHelpers';
+
+=head1 SYNOPSIS
+
+  use WWW::YNAB;
+
+  my $ynab = WWW::YNAB->new(...);
+  my $budget = $ynab->budget('12345678-1234-1234-1234-1234567890ab');
+
+=head1 OVERVIEW
+
+See L<https://api.youneedabudget.com/v1#/Budgets> for more information.
+
+=cut
+
+=method id
+
+=cut
 
 has id => (
     is       => 'ro',
@@ -12,30 +31,54 @@ has id => (
     required => 1,
 );
 
+=method name
+
+=cut
+
 has name => (
     is  => 'ro',
     isa => 'Str',
 );
+
+=method last_modified_on
+
+=cut
 
 has last_modified_on => (
     is  => 'ro',
     isa => 'Str',
 );
 
+=method first_month
+
+=cut
+
 has first_month => (
     is  => 'ro',
     isa => 'Str',
 );
+
+=method last_month
+
+=cut
 
 has last_month => (
     is  => 'ro',
     isa => 'Str',
 );
 
+=method server_knowledge
+
+=cut
+
 has server_knowledge => (
     is  => 'ro',
     isa => 'Int',
 );
+
+=method accounts
+
+=cut
 
 has _accounts => (
     traits   => ['Array'],
@@ -49,6 +92,10 @@ has _accounts => (
     }
 );
 
+=method payees
+
+=cut
+
 has _payees => (
     traits   => ['Array'],
     is       => 'ro',
@@ -60,6 +107,16 @@ has _payees => (
         payees => 'elements',
     }
 );
+
+=method categories
+
+=cut
+
+=method category_groups
+
+Alias for C<categories>.
+
+=cut
 
 has _category_groups => (
     traits   => ['Array'],
@@ -74,6 +131,10 @@ has _category_groups => (
     }
 );
 
+=method months
+
+=cut
+
 has _months => (
     traits   => ['Array'],
     is       => 'ro',
@@ -86,6 +147,10 @@ has _months => (
     }
 );
 
+=method transactions
+
+=cut
+
 has _transactions => (
     traits   => ['Array'],
     is       => 'ro',
@@ -97,6 +162,10 @@ has _transactions => (
         transactions => 'elements',
     }
 );
+
+=method scheduled_transactions
+
+=cut
 
 has _scheduled_transactions => (
     traits   => ['Array'],
@@ -127,6 +196,12 @@ sub _build_accounts {
     ]
 }
 
+=method account($id)
+
+Returns the account with id C<$id>.
+
+=cut
+
 sub account {
     my $self = shift;
     my ($id) = @_;
@@ -152,6 +227,12 @@ sub _build_categories {
     ]
 }
 
+=method category($id)
+
+Returns the category with id C<$id>.
+
+=cut
+
 sub category {
     my $self = shift;
     my ($id) = @_;
@@ -171,6 +252,12 @@ sub _build_payees {
         } @{ $data->{data}{payees} }
     ]
 }
+
+=method payee($id)
+
+Returns the payee with id C<$id>.
+
+=cut
 
 sub payee {
     my $self = shift;
@@ -192,6 +279,12 @@ sub _build_months {
     ]
 }
 
+=method month($id)
+
+Returns the month with id C<$id>.
+
+=cut
+
 sub month {
     my $self = shift;
     my ($id) = @_;
@@ -205,6 +298,29 @@ sub month {
     $month{categories} = \@categories;
     $self->model_from_data('WWW::YNAB::Month', \%month);
 }
+
+=method find_transactions(%query)
+
+Finds transactions based on query parameters. Valid options are (all optional):
+
+=over 4
+
+=item account
+
+=item category
+
+=item payee
+
+=item type
+
+=item since_date
+
+=back
+
+Note that only one of C<account>, C<category>, C<payee>, or C<type> may be
+specified.
+
+=cut
 
 sub find_transactions {
     my $self = shift;
@@ -255,6 +371,12 @@ sub _build_transactions {
     $self->find_transactions
 }
 
+=method transaction($id)
+
+Returns the transaction with id C<$id>.
+
+=cut
+
 sub transaction {
     my $self = shift;
     my ($id) = @_;
@@ -284,6 +406,12 @@ sub _build_scheduled_transactions {
         } @{ $data->{data}{scheduled_transactions} }
     ]
 }
+
+=method scheduled_transaction($id)
+
+Returns the scheduled transaction with id C<$id>.
+
+=cut
 
 sub scheduled_transaction {
     my $self = shift;
