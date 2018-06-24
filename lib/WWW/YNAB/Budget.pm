@@ -98,6 +98,18 @@ has _transactions => (
     }
 );
 
+has _scheduled_transactions => (
+    traits   => ['Array'],
+    is       => 'ro',
+    isa      => 'ArrayRef[WWW::YNAB::ScheduledTransaction]',
+    init_arg => 'scheduled_transactions',
+    lazy     => 1,
+    builder  => '_build_scheduled_transactions',
+    handles  => {
+        scheduled_transactions => 'elements',
+    }
+);
+
 has _ua => (
     is       => 'ro',
     isa      => 'WWW::YNAB::UA',
@@ -255,6 +267,36 @@ sub transaction {
     } @{ $transaction{subtransactions} };
     $transaction{subtransactions} = \@subtransactions;
     $self->model_from_data('WWW::YNAB::Transaction', \%transaction);
+}
+
+sub _build_scheduled_transactions {
+    my $self = shift;
+
+    my $data = $self->_ua->get("/budgets/${\$self->id}/scheduled_transactions");
+    [
+        map {
+            my %transaction = %$_;
+            my @subtransactions = map {
+                $self->model_from_data('WWW::YNAB::ScheduledSubTransaction', $_)
+            } @{ $transaction{subtransactions} };
+            $transaction{subtransactions} = \@subtransactions;
+            $self->model_from_data('WWW::YNAB::ScheduledTransaction', \%transaction)
+        } @{ $data->{data}{scheduled_transactions} }
+    ]
+}
+
+sub scheduled_transaction {
+    my $self = shift;
+    my ($id) = @_;
+
+    my $data = $self->_ua->get("/budgets/${\$self->id}/scheduled_transactions/$id");
+    my $transaction = $data->{data}{scheduled_transaction};
+    my %transaction = %$transaction;
+    my @subtransactions = map {
+        $self->model_from_data('WWW::YNAB::ScheduledSubTransaction', $_)
+    } @{ $transaction{subtransactions} };
+    $transaction{subtransactions} = \@subtransactions;
+    $self->model_from_data('WWW::YNAB::ScheduledTransaction', \%transaction);
 }
 
 __PACKAGE__->meta->make_immutable;

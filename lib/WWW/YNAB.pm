@@ -9,6 +9,8 @@ use WWW::YNAB::CategoryGroup;
 use WWW::YNAB::Category;
 use WWW::YNAB::Month;
 use WWW::YNAB::Payee;
+use WWW::YNAB::ScheduledSubTransaction;
+use WWW::YNAB::ScheduledTransaction;
 use WWW::YNAB::SubTransaction;
 use WWW::YNAB::Transaction;
 use WWW::YNAB::UA;
@@ -117,21 +119,27 @@ sub budget {
 
     my @transactions = map {
         my %transaction = %$_;
-        ($transaction{account_name}) = map {
-            $_->{name}
-        } grep {
-            $_->{id} eq $transaction{account_id}
-        } @{ $budget{accounts} };
-        ($transaction{payee_name}) = map {
-            $_->{name}
-        } grep {
-            $_->{id} eq $transaction{payee_id}
-        } @{ $budget{payees} };
-        ($transaction{category_name}) = map {
-            $_->{name}
-        } grep {
-            $_->{id} eq $transaction{category_id}
-        } @{ $budget{categories} };
+        if ($transaction{account_id}) {
+            ($transaction{account_name}) = map {
+                $_->{name}
+            } grep {
+                $_->{id} eq $transaction{account_id}
+            } @{ $budget{accounts} };
+        }
+        if ($transaction{payee_id}) {
+            ($transaction{payee_name}) = map {
+                $_->{name}
+            } grep {
+                $_->{id} eq $transaction{payee_id}
+            } @{ $budget{payees} };
+        }
+        if ($transaction{category_id}) {
+            ($transaction{category_name}) = map {
+                $_->{name}
+            } grep {
+                $_->{id} eq $transaction{category_id}
+            } @{ $budget{categories} };
+        }
         $transaction{subtransactions} = [
             map {
                 $self->model_from_data('WWW::YNAB::SubTransaction', $_)
@@ -142,6 +150,40 @@ sub budget {
         $self->model_from_data('WWW::YNAB::Transaction', \%transaction)
     } @{ $budget{transactions} };
     $budget{transactions} = \@transactions;
+
+    my @scheduled_transactions = map {
+        my %transaction = %$_;
+        if ($transaction{account_id}) {
+            ($transaction{account_name}) = map {
+                $_->{name}
+            } grep {
+                $_->{id} eq $transaction{account_id}
+            } @{ $budget{accounts} };
+        }
+        if ($transaction{payee_id}) {
+            ($transaction{payee_name}) = map {
+                $_->{name}
+            } grep {
+                $_->{id} eq $transaction{payee_id}
+            } @{ $budget{payees} };
+        }
+        if ($transaction{category_id}) {
+            ($transaction{category_name}) = map {
+                $_->{name}
+            } grep {
+                $_->{id} eq $transaction{category_id}
+            } @{ $budget{categories} };
+        }
+        $transaction{subtransactions} = [
+            map {
+                $self->model_from_data('WWW::YNAB::ScheduledSubTransaction', $_)
+            } grep {
+                $_->{scheduled_transaction_id} eq $transaction{id}
+            } @{ $budget{scheduled_subtransactions} }
+        ];
+        $self->model_from_data('WWW::YNAB::ScheduledTransaction', \%transaction)
+    } @{ $budget{scheduled_transactions} };
+    $budget{scheduled_transactions} = \@scheduled_transactions;
 
     $self->model_from_data(
         'WWW::YNAB::Budget',

@@ -377,8 +377,44 @@ EOF
           "deleted": false
         }
       ],
-      "scheduled_transactions": [],
-      "scheduled_subtransactions": []
+      "scheduled_transactions": [
+        {
+          "id": "66666666-6666-6666-6666-666666666666",
+          "date_first": "2018-06-05",
+          "date_next": "2018-07-05",
+          "frequency": "monthly",
+          "amount": -100000,
+          "memo": "cable",
+          "flag_color": "purple",
+          "account_id": "00000000-0000-0000-0000-111111111111",
+          "payee_id": null,
+          "category_id": "33333333-3333-3333-3333-666666666666",
+          "transfer_account_id": null,
+          "deleted": false
+        }
+      ],
+      "scheduled_subtransactions": [
+        {
+          "id": "77777777-7777-7777-7777-777777777777",
+          "scheduled_transaction_id": "66666666-6666-6666-6666-666666666666",
+          "amount": -50000,
+          "memo": "tv",
+          "payee_id": null,
+          "category_id": "33333333-3333-3333-3333-444444444444",
+          "transfer_account_id": null,
+          "deleted": false
+        },
+        {
+          "id": "77777777-7777-7777-7777-888888888888",
+          "scheduled_transaction_id": "66666666-6666-6666-6666-666666666666",
+          "amount": -50000,
+          "memo": "internet",
+          "payee_id": null,
+          "category_id": "33333333-3333-3333-3333-444444444444",
+          "transfer_account_id": null,
+          "deleted": false
+        }
+      ]
     },
     "server_knowledge": 1
   }
@@ -526,6 +562,51 @@ EOF
           "memo": null,
           "payee_id": null,
           "category_id": "33333333-3333-3333-3333-333333333333",
+          "transfer_account_id": null,
+          "deleted": false
+        }
+      ]
+    }
+  }
+}
+EOF
+    'https://api.youneedabudget.com/v1/budgets/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/scheduled_transactions/66666666-6666-6666-6666-666666666666' => <<'EOF',
+{
+  "data": {
+    "scheduled_transaction": {
+      "id": "66666666-6666-6666-6666-666666666666",
+      "date_first": "2018-06-05",
+      "date_next": "2018-07-05",
+      "frequency": "monthly",
+      "amount": -100000,
+      "memo": "cable",
+      "flag_color": "purple",
+      "account_id": "00000000-0000-0000-0000-111111111111",
+      "account_name": "Checking Account",
+      "payee_id": null,
+      "payee_name": null,
+      "category_id": "33333333-3333-3333-3333-666666666666",
+      "category_name": "Split (Multiple Categories)...",
+      "transfer_account_id": null,
+      "deleted": false,
+      "subtransactions": [
+        {
+          "id": "77777777-7777-7777-7777-777777777777",
+          "scheduled_transaction_id": "66666666-6666-6666-6666-666666666666",
+          "amount": -50000,
+          "memo": "tv",
+          "payee_id": null,
+          "category_id": "33333333-3333-3333-3333-444444444444",
+          "transfer_account_id": null,
+          "deleted": false
+        },
+        {
+          "id": "77777777-7777-7777-7777-888888888888",
+          "scheduled_transaction_id": "66666666-6666-6666-6666-666666666666",
+          "amount": -50000,
+          "memo": "internet",
+          "payee_id": null,
+          "category_id": "33333333-3333-3333-3333-444444444444",
           "transfer_account_id": null,
           "deleted": false
         }

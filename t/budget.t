@@ -113,6 +113,40 @@ is($subtransactions[0]->category_id, "33333333-3333-3333-3333-444444444444");
 is($subtransactions[0]->transfer_account_id, undef);
 ok(!$subtransactions[0]->deleted);
 
+my @scheduled_transactions = $budget->scheduled_transactions;
+is(scalar @scheduled_transactions, 1);
+isa_ok($scheduled_transactions[0], 'WWW::YNAB::ScheduledTransaction');
+is($scheduled_transactions[0]->id, "66666666-6666-6666-6666-666666666666");
+is($scheduled_transactions[0]->date_first, "2018-06-05");
+is($scheduled_transactions[0]->date_next, "2018-07-05");
+is($scheduled_transactions[0]->frequency, "monthly");
+is($scheduled_transactions[0]->amount, -100000);
+is($scheduled_transactions[0]->memo, "cable");
+is($scheduled_transactions[0]->flag_color, "purple");
+is($scheduled_transactions[0]->account_id, "00000000-0000-0000-0000-111111111111");
+is($scheduled_transactions[0]->payee_id, undef);
+is($scheduled_transactions[0]->category_id, "33333333-3333-3333-3333-666666666666");
+is($scheduled_transactions[0]->transfer_account_id, undef);
+ok(!$scheduled_transactions[0]->deleted);
+is($scheduled_transactions[0]->account_name, "Checking Account");
+is($scheduled_transactions[0]->payee_name, undef);
+# this is i think a bug in their api - they don't return a category object for
+# "split" even though they have a category id for it, and the name shows up in
+# the direct transaction/scheduled_transaction individual object request
+is($scheduled_transactions[0]->category_name, undef);
+is(scalar $scheduled_transactions[0]->subtransactions, 2);
+
+my @scheduled_subtransactions = $scheduled_transactions[0]->subtransactions;
+is(scalar @scheduled_subtransactions, 2);
+is($scheduled_subtransactions[0]->id, "77777777-7777-7777-7777-777777777777");
+is($scheduled_subtransactions[0]->scheduled_transaction_id, "66666666-6666-6666-6666-666666666666");
+is($scheduled_subtransactions[0]->amount, -50000);
+is($scheduled_subtransactions[0]->memo, "tv");
+is($scheduled_subtransactions[0]->payee_id, undef);
+is($scheduled_subtransactions[0]->category_id, "33333333-3333-3333-3333-444444444444");
+is($scheduled_subtransactions[0]->transfer_account_id, undef);
+ok(!$scheduled_subtransactions[0]->deleted);
+
 is(scalar $ua->test_requests, 1);
 
 done_testing;
