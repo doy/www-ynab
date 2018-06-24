@@ -85,8 +85,12 @@ has category_name => (
 );
 
 has subtransactions => (
-    is  => 'ro',
-    isa => 'ArrayRef[WWW::YNAB::SubTransaction]',
+    traits  => ['Array'],
+    is      => 'bare',
+    isa     => 'ArrayRef[WWW::YNAB::SubTransaction]',
+    handles => {
+        subtransactions => 'elements',
+    }
 );
 
 __PACKAGE__->meta->make_immutable;

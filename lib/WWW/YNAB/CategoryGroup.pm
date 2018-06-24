@@ -23,8 +23,12 @@ has deleted => (
 );
 
 has categories => (
-    is  => 'ro',
-    isa => 'ArrayRef[WWW::YNAB::Category]',
+    traits  => ['Array'],
+    is      => 'bare',
+    isa     => 'ArrayRef[WWW::YNAB::Category]',
+    handles => {
+        categories => 'elements',
+    }
 );
 
 __PACKAGE__->meta->make_immutable;
