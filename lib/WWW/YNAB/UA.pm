@@ -52,12 +52,14 @@ sub _request {
     my $self = shift;
     my ($method, $path, $params) = @_;
 
-    warn "\U$method\E $path";
+    if (0) {
+        warn "\U$method\E $path";
+    }
 
     my $base = $self->base_uri;
     $base =~ s{/$}{};
     $path =~ s{^/}{};
-    my $uri = $self->base_uri . '/' . $path;
+    my $uri = "$base/$path";
 
     my $response = $self->ua->$method(
         $uri,
