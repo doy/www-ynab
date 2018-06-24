@@ -97,6 +97,9 @@ is($transactions[0]->category_id, "33333333-3333-3333-3333-444444444444");
 is($transactions[0]->transfer_account_id, undef);
 is($transactions[0]->import_id, "YNAB:-98760:2018-06-18:1");
 ok(!$transactions[0]->deleted);
+is($transactions[0]->account_name, "Checking Account");
+is($transactions[0]->payee_name, "the power company");
+is($transactions[0]->category_name, "Utilities");
 is(scalar $transactions[0]->subtransactions, 0);
 
 my @subtransactions = $transactions[2]->subtransactions;

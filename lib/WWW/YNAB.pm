@@ -117,6 +117,21 @@ sub budget {
 
     my @transactions = map {
         my %transaction = %$_;
+        ($transaction{account_name}) = map {
+            $_->{name}
+        } grep {
+            $_->{id} eq $transaction{account_id}
+        } @{ $budget{accounts} };
+        ($transaction{payee_name}) = map {
+            $_->{name}
+        } grep {
+            $_->{id} eq $transaction{payee_id}
+        } @{ $budget{payees} };
+        ($transaction{category_name}) = map {
+            $_->{name}
+        } grep {
+            $_->{id} eq $transaction{category_id}
+        } @{ $budget{categories} };
         $transaction{subtransactions} = [
             map {
                 $self->model_from_data('WWW::YNAB::SubTransaction', $_)
