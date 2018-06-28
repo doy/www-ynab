@@ -1,5 +1,7 @@
 package WWW::YNAB::ModelHelpers;
 
+
+use 5.010;
 use Moose::Role;
 
 sub model_from_data {

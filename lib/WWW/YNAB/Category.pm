@@ -1,5 +1,7 @@
 package WWW::YNAB::Category;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: Category model object
 

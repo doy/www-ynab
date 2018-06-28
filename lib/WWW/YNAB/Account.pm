@@ -1,5 +1,7 @@
 package WWW::YNAB::Account;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: Account model object
 

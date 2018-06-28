@@ -1,5 +1,7 @@
 package WWW::YNAB;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: Wrapper for the YNAB API
 

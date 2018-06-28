@@ -1,5 +1,7 @@
 package WWW::YNAB::Transaction;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: Transaction model object
 

@@ -1,5 +1,7 @@
 package WWW::YNAB::CategoryGroup;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: CategoryGroup model object
 

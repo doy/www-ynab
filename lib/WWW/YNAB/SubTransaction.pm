@@ -1,5 +1,7 @@
 package WWW::YNAB::SubTransaction;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: SubTransaction model object
 

@@ -1,5 +1,7 @@
 package WWW::YNAB::Payee;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: Payee model object
 

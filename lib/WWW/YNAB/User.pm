@@ -1,5 +1,7 @@
 package WWW::YNAB::User;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: User model object
 

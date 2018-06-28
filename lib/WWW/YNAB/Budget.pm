@@ -1,5 +1,7 @@
 package WWW::YNAB::Budget;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: Budget model object
 

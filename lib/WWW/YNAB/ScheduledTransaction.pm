@@ -1,5 +1,7 @@
 package WWW::YNAB::ScheduledTransaction;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: ScheduledSubTransaction model object
 

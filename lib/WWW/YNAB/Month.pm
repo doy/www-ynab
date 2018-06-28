@@ -1,5 +1,7 @@
 package WWW::YNAB::Month;
 
+
+use 5.010;
 use Moose;
 # ABSTRACT: Month model object
 

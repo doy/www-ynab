@@ -1,5 +1,7 @@
 package WWW::YNAB::UA;
 
+
+use 5.010;
 use Moose;
 
 use HTTP::Tiny;
